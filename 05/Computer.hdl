@@ -20,4 +20,8 @@ CHIP Computer {
 
     PARTS:
     // Put your code here:
+    Mux16(a = instruction, b = , out = mux16out)
+    Aregister(in = mux16out, load = Arload, out = MUXtoIN, out[0..14] = addressM)
+    Mux16(a = MuxtoIN, b = inM, out = yALU)
+    ALU(x = xALU, y = yALU,zx=instruction[11],nx=instruction[10],zy=instruction[9],ny=instruction[8],f=instruction[7],no=instruction[6],out=outM,out=back,zr=zrout,ng=ngout)
 }
