@@ -40,4 +40,44 @@ CHIP CPU {
 
     PARTS:
     // Put your code here:
+       Mux16(a=instruction , b=back , sel = instruction[15] , out = Arin);
+    
+    // A register
+    Mux(a = false , b = true , sel = instruction[15] , out = isC);
+    Not(in = isC , out = isA); //不是A指令，就是C指令
+    And(a = isC ,b = instruction[5] , out = ALUtoA); //給A的load
+    Or(a = isA , b = ALUtoA , out = Aload); //給A的load
+
+    ARegister(in = Arin , load = Aload , out = Arout,out[0..14]=addressM);
+    Mux16(a = Arout , b = inM , sel = instruction[12] , out = ALUb);
+    And(a = instruction[4] , b = instruction[15] , out = Dload);
+    DRegister(in = back , load = Dload , out = ALUa);
+    ALU(x = ALUa , y = ALUb ,zx = instruction[11] , nx = instruction[10] , zy = instruction[9] , ny = instruction[8] , f = instruction[7] , no = instruction[6] , out = outM , out = back , zr = zr , ng = ng);
+    
+    //JUMP
+    Mux(a=false,b=true,sel=instruction[2],out=j1);
+    Mux(a=false,b=true,sel=instruction[1],out=j2);
+    Mux(a=false,b=true,sel=instruction[0],out=j3);
+    
+    //JMP
+    And(a=j3,b=j2,out=jmp0);
+    And(a=jmp0,b=j1,out=JMP);
+
+    //JEQ
+    And(a=j2,b=zr,out=EQ);
+
+    //JLT
+    And(a=j1,b=ng,out=LT);
+    
+    //JGT
+    Not(in=ng,out=nng);
+    And(a=nng,b=j3,out=GT0);
+    Not(in=zr,out=nzr);
+    And(a=nzr,b=GT0,out=GT);
+
+
+    Or8Way(in[0]=JMP,in[1]=EQ,in[2]=LT,in[3]=GT,in[4..7]=false,out=pcload0);
+    And(a=instruction[15],b=pcload0,out=pcload);
+    And(a=instruction[3],b=instruction[15],out=writeM);
+    PC(in=Arout,load=pcload,reset=reset,inc=true,out[0..14]=pc);
 }
