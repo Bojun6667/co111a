@@ -11,4 +11,6 @@
 
 第一章至第三章是參考nand2tetris的教材自己做出
 
+Nand2tetris:https://www.nand2tetris.org/
+
 第四章至第五章是取自同學的https://github.com/dallas145/co111a
