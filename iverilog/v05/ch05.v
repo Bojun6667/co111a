@@ -1,4 +1,4 @@
-`include "..\03\ch03.v"
+`include "..\v03\ch03.v"
 
 module RAM8K(input[15:0] in, input[12:0] address, input clock, load, output[15:0] out);
     reg[15:0] m[0:2**13-1];

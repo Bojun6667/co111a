@@ -6,7 +6,7 @@ reg[8:0] address;
 reg clock, load;
 wire[15:0] out;
 
-RAM512 g(in, address, clock, load, out);
+RAM512 g(in, clock, load, address, out);
 
 initial begin
     clock=0;
