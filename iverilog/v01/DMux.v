@@ -4,7 +4,7 @@ module DMux_test;
 reg in,sel;
 wire a,b;
 
-DMux g(in,sel,a,b);
+DMux g0(in,sel,a,b);
 
 initial
 begin

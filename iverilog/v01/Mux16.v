@@ -1,6 +1,6 @@
 `include "ch01.v"
 
-module main;
+module Mux16_test;
 reg[0:15] a, b;
 reg sel;
 wire[0:15] mux2;

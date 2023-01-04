@@ -1,3 +1,4 @@
+
 module Nand (input a, b, output out);
     nand g1(out, a, b);
 endmodule
@@ -100,12 +101,6 @@ module Mux (input a, b, sel, output out);
     Or g4(aAndNsel, bAndsel, out);
 endmodule
 
-module DMux (input in, sel, output a, b);
-    Not g1(sel, Nsel);
-    And g2(Nsel, in, a);
-    And g3(sel, in, b);
-endmodule
-
 module Mux16 (input[0:15] a, b, input sel, output[0:15] out);
     Mux g0 (a[0], b[0], sel, out[0]);
     Mux g1 (a[1], b[1], sel, out[1]);
@@ -141,4 +136,31 @@ module Mux8Way16 (input[0:15]a, b, c, d, e, f, g, h, input[0:2] sel, output[0:15
 	Mux16 g4(outab, outcd, sel[1], outad);
 	Mux16 g5(outef, outgh, sel[1], outeh);
 	Mux16 g6(outad, outeh, sel[2], out);
+endmodule
+
+module DMux(input in,sel,output a,b);
+    wire Notsel;
+    Nand g0(sel,sel,Notsel);
+    Nand g1(in, sel, Nota);
+    Nand g2(Nota, Nota, b);
+    Nand g3(Notsel, in, b);
+    Nand g4(Notb, Notb, a);
+endmodule
+
+module DMux4Way (input in, input[0:1] sel, output a, b, c, d);
+    wire ao, bo;
+    DMux g0(in, sel[1], ao, bo);
+	DMux g1(ao, sel[0], a, b);
+	DMux g2(bo, sel[0], c, d);
+endmodule
+
+module DMux8Way(input in, input[0:2] sel, output a,b,c,d,e,f,g,h);
+    wire ao, bo, aoo, boo, coo, doo;
+    DMux g0(in, sel[2], ao, bo);
+	DMux g1(ao, sel[1], aoo, boo);
+	DMux g2(bo, sel[1], coo, doo);
+	DMux g3(aoo, sel[0], a, b);
+	DMux g4(boo, sel[0], c, d);
+	DMux g5(coo, sel[0], e, f);
+	DMux g6(doo, sel[0], g, h);
 endmodule

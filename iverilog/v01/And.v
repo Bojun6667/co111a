@@ -1,6 +1,6 @@
 `include "ch01.v"
 
-module main;
+module And_test;
 reg a, b;
 wire abAnd;
 

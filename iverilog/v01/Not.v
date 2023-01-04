@@ -1,6 +1,6 @@
 `include "ch01.v"
 
-module main;
+module Not_test;
 reg a;
 wire aNot;
 
